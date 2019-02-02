@@ -11,6 +11,9 @@ firebase.initializeApp(config);
 
 var productCode;
 var databaseRef = firebase.database().ref();
+var existingQuantity = 0;
+var totalQuantity;
+var txtName;
 
 $(function() {
     var resultCollector = Quagga.ResultCollector.create({
@@ -96,36 +99,36 @@ $(function() {
                 return;
             }
         },
-        initCameraSelection: function(){
-            var streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
-
-            return Quagga.CameraAccess.enumerateVideoDevices()
-            .then(function(devices) {
-                function pruneText(text) {
-                    return text.length > 30 ? text.substr(0, 30) : text;
-                }
-                var $deviceSelection = document.getElementById("deviceSelection");
-                while ($deviceSelection.firstChild) {
-                    $deviceSelection.removeChild($deviceSelection.firstChild);
-                }
-                devices.forEach(function(device) {
-                    var $option = document.createElement("option");
-                    $option.value = device.deviceId || device.id;
-                    $option.appendChild(document.createTextNode(pruneText(device.label || device.deviceId || device.id)));
-                    $option.selected = streamLabel === device.label;
-                    $deviceSelection.appendChild($option);
-                });
-            });
-        },
+        // initCameraSelection: function(){
+        //     var streamLabel = Quagga.CameraAccess.getActiveStreamLabel();
+        //
+        //     return Quagga.CameraAccess.enumerateVideoDevices()
+        //     .then(function(devices) {
+        //         function pruneText(text) {
+        //             return text.length > 30 ? text.substr(0, 30) : text;
+        //         }
+        //         var $deviceSelection = document.getElementById("deviceSelection");
+        //         while ($deviceSelection.firstChild) {
+        //             $deviceSelection.removeChild($deviceSelection.firstChild);
+        //         }
+        //         devices.forEach(function(device) {
+        //             var $option = document.createElement("option");
+        //             $option.value = device.deviceId || device.id;
+        //             $option.appendChild(document.createTextNode(pruneText(device.label || device.deviceId || device.id)));
+        //             $option.selected = streamLabel === device.label;
+        //             $deviceSelection.appendChild($option);
+        //         });
+        //     });
+        // },
         attachListeners: function() {
             var self = this;
 
-            self.initCameraSelection();
-            $(".controls").on("click", "button.stop", function(e) {
-                e.preventDefault();
-                Quagga.stop();
-                self._printCollectedResults();
-            });
+            // self.initCameraSelection();
+            // $(".controls").on("click", "button.stop", function(e) {
+            //     e.preventDefault();
+            //     Quagga.stop();
+            //     self._printCollectedResults();
+            // });
 
             $(".controls").on("click", "button.start", function(e) {
               // Quagga.init({
@@ -323,10 +326,10 @@ $(function() {
 
         if (App.lastResult !== code) {
             App.lastResult = code;
-            var $node = null, canvas = Quagga.canvas.dom.image;
-            $node = $('<li><label>Barcode:</label><h4 class="barcode"></h4></li>');
-            $node.find("h4.barcode").html(code);
-            $("#result_strip ul.thumbnails").prepend($node);
+            // var $node = null, canvas = Quagga.canvas.dom.image;
+            // $node = $('<li><label>Barcode:</label><h4 class="barcode"></h4></li>');
+            // $node.find("h4.barcode").html(code);
+            // $("#result_strip ul.thumbnails").prepend($node);
 
 
             products.once("value", function(snapshot) {
@@ -339,33 +342,32 @@ $(function() {
                 if(child.key == "barCode"){
                   document.getElementById("txtBarcode").value = child.val();
                 }
+                if(child.key == "productType"){
+                  // types = data.val().jobTypes;
+                  // console.log(types);
+                  // for(let i=0; i<types.length; i++){
+                  //   document.getElementById('job_Types2').value = data.val().jobTypes;
+                  // }
+                  // alert(child.val());
+                  document.getElementById("productType").value = assignProductsTypes(child.val());
+                }
                 if(child.key == "quantity"){
-                  document.getElementById("txtQuantity").disabled = true;
-                  document.getElementById("txtQuantity").value = child.val();
-                  document.getElementById("lblPreviousQuantity").inner = "There are " + child.val() + " quantities added already.";
+                  existingQuantity = child.val();
+                  document.getElementById("lblExistingQuantity").innerHTML = existingQuantity;
+                  // document.getElementById("lblPreviousQuantity").inner = "There are " + child.val() + " quantities added already.";
                   console.log(child.val());
                 }
-                if(child.key == "dateOfExpiry"){
-                  document.getElementById("txtdateOfExpiry").disabled = true;
-                  document.getElementById("txtdateOfExpiry").value = child.val();
-                }
+                // if(child.key == "dateOfExpiry"){
+                //   document.getElementById("txtdateOfExpiry").value = child.val();
+                // }
                 audio.play();
                 setTimeout(myFunction, 3000)
-                document.getElementById("btnAdd").disabled = true;
-                document.getElementById("btnEdit").disabled = false;
-                document.getElementById("btnSave").disabled = false;
               });
             });
             document.getElementById("txtBarcode").value = code;
-            document.getElementById("txtName").value = "";
-            document.getElementById("txtName").disabled = false;
-            document.getElementById("txtQuantity").value = "";
-            document.getElementById("txtQuantity").disabled = false;
-            document.getElementById("txtdateOfExpiry").value = "";
-            document.getElementById("txtdateOfExpiry").disabled = false;
-            document.getElementById("btnAdd").disabled = false;
-            document.getElementById("btnEdit").disabled = true;
-            document.getElementById("btnSave").disabled = true;
+            if (document.getElementById('lblExistingQuantity').innerHTML == "") {
+              document.getElementById("lblExistingQuantity").innerHTML = 0;
+            }
             audio.play();
             setTimeout(myFunction, 3000)
             console.log("Code Scanned: " + code);
@@ -376,21 +378,23 @@ $(function() {
 
 function add() {
   var products = databaseRef.child("products/");
-  var txtName = document.getElementById('txtName').value;
+  txtName = getProductName();
   var txtBarcode = document.getElementById('txtBarcode').value;
-  var txtQuantity = document.getElementById('txtQuantity').value;
-
+  var txtQuantityToAdd = getQuantityToAdd();
+  console.log("Selected Product Type: " + getSelectedValues());
   // console.log(("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2) + '/' +  date.getFullYear());
   products.once('value', function(snapshot) {
       console.log("Snapshot: " + snapshot);
         if (!snapshot.hasChild(txtBarcode)) {
           console.log("VALUE FOUND for " + txtBarcode);
+          totalQuantity = Number(existingQuantity) + Number(txtQuantityToAdd);
             products.child(txtBarcode).set({
               "name": txtName,
+              "productType": getSelectedValues(),
               "barCode": txtBarcode,
-              "quantity": txtQuantity,
-              "dateOfExpiry": getExpiryDate(),
-              "dateOfExpiryNumeric": getExpiryDateNumeric()
+              "quantity": totalQuantity
+              // "dateOfExpiry": getExpiryDate(),
+              // "dateOfExpiryNumeric": getExpiryDateNumeric()
             });
         }
         else {
@@ -404,60 +408,127 @@ function add() {
   });
 }
 
-function unlockTxts(){
-  var txtBarcode = document.getElementById('txtBarcode').value
-  if (txtBarcode.length != 0)
-      {
-        document.getElementById("txtName").disabled = false;
-        document.getElementById("txtQuantity").disabled = false;
-        document.getElementById("txtdateOfExpiry").disabled = false;
-        document.getElementById("btnEdit").disabled = true;
-      }
+function getSelectedValues(){
+            var dropDown = document.getElementById('productType'), productTypes = [], i;
+            for (i = 0; i < dropDown.options.length ; i ++) {
+                if (dropDown.options[i].selected) {
+                    productTypes.push( dropDown.options[i].text);
+                    //countryArray.push({ Name: dropDown.options[i].text, Value: dropDown.options[i].value });
+                }
+            }
+            return productTypes;
 }
-function edit() {
-  var txtBarcode = document.getElementById('txtBarcode').value;
-  var products = databaseRef.child("products/"+txtBarcode);
 
-  // document.getElementById("txtName").disabled = false;
-  // document.getElementById("txtQuantity").disabled = false;
-  // document.getElementById("txtdateOfExpiry").disabled = false;
-
-  var txtName = document.getElementById('txtName').value;
-  var txtQuantity = document.getElementById('txtQuantity').value;
-  var txtdateOfExpiry = document.getElementById('txtdateOfExpiry').value;
-
-  products.update({
-    "name": txtName,
-    "quantity": txtQuantity,
-    "dateOfExpiry": getExpiryDate(),
-    "dateOfExpiryNumeric": getExpiryDateNumeric()
-  }).then(function(){
-    alert("Data updated successfully.");
-    document.getElementById("txtName").disabled = true;
-    document.getElementById("txtQuantity").disabled = true;
-    document.getElementById("txtdateOfExpiry").disabled = true;
-    document.getElementById("btnEdit").disabled = false;
-  }).catch(function(error) {
-    alert("Data could not be updated." + error);
-  });
-  // alert(txtBarcode + " value has been edited successfully");
-  // document.getElementById("txtName").disabled = true;
-  // document.getElementById("txtQuantity").disabled = true;
-  // document.getElementById("txtdateOfExpiry").disabled = true;
+function assignProductsTypes(productType){
+  var productTypeValue;
+  if(productType == "Pepsi"){
+    productTypeValue = 1;
+  }else if(productType == "Coca-Cola"){
+    productTypeValue = 2;
+  }else if(productType == "Nestle"){
+    productTypeValue = 3;
+  }else if(productType == "Cadbury"){
+    productTypeValue = 4;
+  }else if(productType == "Option 5"){
+    productTypeValue = 5;
+  }else if(productType == "Option 6"){
+    productTypeValue = 6;
+  }else if(productType == "Option 7"){
+    productTypeValue = 7;
+  }else if(productType == "Option 8"){
+    productTypeValue = 8;
+  }else if(productType == "Option 9"){
+    productTypeValue = 9;
+  }
+    // switch(productType){
+    //   case "Pepsi":
+    //       mappedValue.push("1");
+    //       break;
+    //   case "Coca-Cola":
+    //       mappedValue.push("2");
+    //       break;
+    //   case "Nestle":
+    //       mappedValue.push("3");
+    //       break;
+    //   case "Cadbury":
+    //       mappedValue = "4";
+    //       console.log("INSIDE");
+    //       break;
+    //   case "Option 5":
+    //       mappedValue.push("5");
+    //       break;
+    //   case "Option 6":
+    //       mappedValue.push("6");
+    //       break;
+    //   case "Option 7":
+    //       mappedValue.push("7");
+    //       break;
+    //   case "Option 8":
+    //       mappedValue.push("8");
+    //       break;
+    //   case "Option 9":
+    //       mappedValue.push("9");
+    //       break;
+    //     }
+    console.log("Value: "+productTypeValue);
+  return productTypeValue;
 }
+
+document.getElementById("btnFinish").onclick = add;
+// function unlockTxts(){
+//   var txtBarcode = document.getElementById('txtBarcode').value
+//   if (txtBarcode.length != 0)
+//       {
+//         document.getElementById("txtName").disabled = false;
+//         document.getElementById("txtQuantity").disabled = false;
+//         document.getElementById("txtdateOfExpiry").disabled = false;
+//         document.getElementById("btnEdit").disabled = true;
+//       }
+// }
+// function edit() {
+//   var txtBarcode = document.getElementById('txtBarcode').value;
+//   var products = databaseRef.child("products/"+txtBarcode);
+//
+//   // document.getElementById("txtName").disabled = false;
+//   // document.getElementById("txtQuantity").disabled = false;
+//   // document.getElementById("txtdateOfExpiry").disabled = false;
+//
+//   var txtName = document.getElementById('txtName').value;
+//   var txtQuantity = document.getElementById('txtQuantity').value;
+//   var txtdateOfExpiry = document.getElementById('txtdateOfExpiry').value;
+//
+//   products.update({
+//     "name": txtName,
+//     "quantity": txtQuantity,
+//     "dateOfExpiry": getExpiryDate(),
+//     "dateOfExpiryNumeric": getExpiryDateNumeric()
+//   }).then(function(){
+//     alert("Data updated successfully.");
+//     document.getElementById("txtName").disabled = true;
+//     document.getElementById("txtQuantity").disabled = true;
+//     document.getElementById("txtdateOfExpiry").disabled = true;
+//     document.getElementById("btnEdit").disabled = false;
+//   }).catch(function(error) {
+//     alert("Data could not be updated." + error);
+//   });
+//   // alert(txtBarcode + " value has been edited successfully");
+//   // document.getElementById("txtName").disabled = true;
+//   // document.getElementById("txtQuantity").disabled = true;
+//   // document.getElementById("txtdateOfExpiry").disabled = true;
+// }
 
 function myFunction() {}
 
-var calendar_from = new SalsaCalendar({
-  inputId: 'txtdateOfExpiry',
-  lang: 'en',
-  range: {
-    min: 'today'
-  },
-  calendarPosition: 'right',
-  fixed: false,
-  connectCalendar: true
-});
+// var calendar_from = new SalsaCalendar({
+//   inputId: 'txtdateOfExpiry',
+//   lang: 'en',
+//   range: {
+//     min: 'today'
+//   },
+//   calendarPosition: 'right',
+//   fixed: false,
+//   connectCalendar: true
+// });
 
 function getCurrentDate(){
   var today = new Date();
@@ -489,3 +560,22 @@ function getExpiryDateNumeric(){
   var expiryDateNumeric = Date.parse(getExpiryDate());
   return expiryDateNumeric;
 }
+
+function fillLastScreenValues(){
+  document.getElementById("lblTotalQuantity").innerHTML = Number(getQuantityToAdd()) + Number(existingQuantity);
+  document.getElementById("lblProductName").innerHTML = getProductName();
+  // if(txtName == undefined){
+  //   document.getElementById("lastScreenMessage").innerHTML = "Please Scan the barcode";
+  // }else {
+  //   document.getElementById("lastScreenMessage").innerHTML = "Click Finish to add " + totalQuantity + "quantities of " + txtName + ". Or click Previous to make any changes.";
+  // }
+}
+
+function getQuantityToAdd(){
+  return document.getElementById("txtQuantityToAdd").value;
+}
+
+function getProductName(){
+  return document.getElementById("txtName").value;
+}
+fillLastScreenValues();

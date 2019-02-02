@@ -41,15 +41,15 @@ footer {
 }
 
 #interactive.viewport {
-  width: 640px;
-  height: 480px;
+  width: 100px;
+  height: 100px;
 }
 
 
 #interactive.viewport canvas, video {
   float: left;
-  width: 640px;
-  height: 480px;
+  width: 100px;
+  height: 100px;
 }
 
 #interactive.viewport canvas.drawingBuffer, video.drawingBuffer {
@@ -61,15 +61,6 @@ footer {
   margin: 0;
   padding: 0;
 }
-
-.controls .input-group {
-  float: left;
-}
-
-.controls .input-group input, .controls .input-group button {
-  display: block;
-}
-
 .controls .reader-config-group {
   float: right;
 }
@@ -206,9 +197,6 @@ i.icon-24-scan {
     box-shadow: none;
   }
 
-  #container form.voucher-form input.voucher-code {
-    width: 180px;
-  }
 }
 @media (max-width: 603px) {
 
@@ -220,9 +208,6 @@ i.icon-24-scan {
       width: 50%;
   }
 
-  .reader-config-group label > select, .reader-config-group label > input {
-      max-width: calc(50% - 2px);
-  }
 
   #interactive.viewport {
     width: 300px;
