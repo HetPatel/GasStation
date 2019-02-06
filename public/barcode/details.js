@@ -24,7 +24,7 @@ function showAllDetails(){
   products.once('value', function(snapshot){
     if(snapshot.exists()){
        snapshot.forEach(function(data){
-        var data = [[data.val().name, data.val().barCode, data.val().quantity, data.val().dateOfExpiry]]
+        var data = [[data.val().productType, data.val().name, data.val().barCode, data.val().quantity]]
         var cityTable = makeTable($(document.body), data);
        });
     }
@@ -33,6 +33,15 @@ function showAllDetails(){
   });
 }
 
+function get_firebase_list(){
+  var productDropdown = document.getElementById("productType");
+  var selectedItem = productDropdown[productDropdown.selectedIndex].text;
+  databaseRef.child("products").child("0068000531122").orderByChild("productType").equalTo("Option 5").on("child_added", function(snapshot) {
+    console.log("Hey :" + snapshot.key); // on newer SDKs, this may be snapshot.key
+  });
+  console.log("Selected Item: " + selectedItem);
+}
+// get_firebase_list();
 function makeTable(container, data) {
 
     $.each(data, function(rowIndex, r) {
@@ -71,7 +80,7 @@ function getListFromRange(){
   document.getElementById("showText").innerHTML = "Showing products which expires before " + "<b>" + date.getMonth()+1 + "</b>";
   products.orderByChild("dateOfExpiryNumeric").endAt(parsedDate).on("child_added", function(snapshot) {
     if(snapshot.exists()){
-      var data = [[snapshot.val().name, snapshot.val().barCode, snapshot.val().quantity, snapshot.val().dateOfExpiry]]
+      var data = [[snapshot.val().name, snapshot.val().barCode, snapshot.val().quantity]]
       var cityTable = makeTable($(document.body), data);
       // console.log(snapshot.key);
       // console.log(snapshot.val());
@@ -79,13 +88,13 @@ function getListFromRange(){
 });
 }
 
-var calendar_from = new SalsaCalendar({
-  inputId: 'txtdateOfExpiry',
-  lang: 'en',
-  range: {
-    min: 'today'
-  },
-  calendarPosition: 'right',
-  fixed: false,
-  connectCalendar: true
-});
+// var calendar_from = new SalsaCalendar({
+//   inputId: 'txtdateOfExpiry',
+//   lang: 'en',
+//   range: {
+//     min: 'today'
+//   },
+//   calendarPosition: 'right',
+//   fixed: false,
+//   connectCalendar: true
+// });

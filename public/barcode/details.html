@@ -18,15 +18,29 @@
   <body>
     <button id="btnAllDetails" onclick="showAllDetails()">Show All</button>
     <button id="btnDetails" onclick="printTable()">Print</button>
-    <input type="text" id="txtdateOfExpiry" class="salsa-calendar-input"/>
-    <button id="btnDetails" onclick="getListFromRange()">Click Me!</button>
     <input type="text" id="search" placeholder="Type to search">
-
+    <!-- <input type="text" id="txtdateOfExpiry" class="salsa-calendar-input"/> -->
+    <!-- <button id="btnDetails" onclick="getListFromRange()">Click Me!</button> -->
+    <!-- <select id="productTypeSelect" name="productType"></select> -->
+    <button id="btnGetList" onclick="get_firebase_list()">Get List</button>
+    <select id="productType" class="form-control">
+        <option disabled="" selected="">- type -</option>
+        <option value="1">Pepsi</option>
+        <option value="2">Coca-Cola</option>
+        <option value="3">Nestle</option>
+        <option value="4">Cadbury</option>
+        <option value="5">Option 5</option>
+        <option value="6">Option 6</option>
+        <option value="7">Option 7</option>
+        <option value="8">Option 8</option>
+        <option value="9">Option 9</option>
+    </select>
     <div id="divText">
       <p id="showText"></p>
     </div>
 
     <script src="vendor/jquery-1.9.0.min.js" type="text/javascript"></script>
+    <!-- <script src="test2/assets/js/main.js" type="text/javascript"></script> -->
     <script src="details.js" type="text/javascript"></script>
   </body>
 </html>

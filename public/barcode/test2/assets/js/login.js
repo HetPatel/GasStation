@@ -11,7 +11,7 @@ var config = {
 var initializeApp = firebase.initializeApp(config);
 
 var provider = new firebase.auth.GoogleAuthProvider();
-var emails = ["het09it@gmail.com"];
+var emails = ["het09it@gmail.com", "het.patel@cbc.ca", "nehalpthakar@gmail.com", "jeetsangani@gmail.com"];
 
 function googleSignin() {
    firebase.auth()
@@ -21,7 +21,7 @@ function googleSignin() {
       var user = result.user;
 
       if(emails.includes(user.email)){
-        window.location = 'wizard-list-place.html';
+        window.location = 'admin.html';
       }else {
         window.location = 'Permission_Not_Granted.html';
       }

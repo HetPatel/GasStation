@@ -9,6 +9,8 @@
 	<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-firestore.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-auth.js"></script>
+	<!-- <script src="assets/js/require.js" type="text/javascript"></script> -->
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
@@ -21,30 +23,20 @@
 	<link href="assets/css/demo.css" rel="stylesheet" />
 
 	<!-- Fonts and Icons -->
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
 	<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 	<link href="assets/css/themify-icons.css" rel="stylesheet">
 </head>
 
 <body>
 	<div class="image-container set-full-height" style="background-image: url('assets/img/paper-2.jpeg')">
-	    <!--   Creative Tim Branding   -->
-	    <a href="http://creative-tim.com">
 	         <div class="logo-container">
 	            <div class="logo">
 	                <img src="assets/img/new_logo.png">
 	            </div>
 	            <div class="brand">
-	                Creative Tim
+	                <label id="lblUserName"> </label> <br/> <label style="color:lightgrey" id="lblSignOut" onclick="signOut()">Signout</label>
 	            </div>
 	        </div>
-	    </a>
-
-		<!--  Made With Paper Kit  -->
-		<a href="http://demos.creative-tim.com/paper-kit?ref=paper-bootstrap-wizard" class="made-with-pk">
-			<div class="brand">PK</div>
-			<div class="made-with">Made with <strong>Paper Kit</strong></div>
-		</a>
 
 	    <!--   Big container   -->
 	    <div class="container">
@@ -115,46 +107,6 @@
 		                                        	<input type="text" class="form-control" id="txtBarcode" placeholder="Product Barcode" disabled="true">
 		                                    	</div>
 		                                	</div>
-		                                	<!--<div class="col-sm-5">
-		                                    	<div class="form-group">
-		                                            <label>Country</label><br>
-		                                            <select name="country" class="form-control">
-		                                                <option disabled="" selected="">- country -</option>
-		                                                <option value="Afghanistan"> Afghanistan </option>
-		                                                <option value="Albania"> Albania </option>
-		                                                <option value="Algeria"> Algeria </option>
-		                                                <option value="American Samoa"> American Samoa </option>
-		                                                <option value="Andorra"> Andorra </option>
-		                                                <option value="Angola"> Angola </option>
-		                                                <option value="Anguilla"> Anguilla </option>
-		                                                <option value="Antarctica"> Antarctica </option>
-		                                                <option value="...">...</option>
-		                                            </select>
-		                                        </div>
-		                                	</div>
-		                                	<div class="col-sm-5 col-sm-offset-1">
-		                                    	<div class="form-group">
-		                                        	<label>Accommodates</label>
-		                                        	<select class="form-control">
-			                                            <option disabled="" selected="">- persons -</option>
-			                                            <option>1 Person</option>
-			                                            <option>2 Persons </option>
-			                                            <option>3 Persons</option>
-			                                            <option>4 Persons</option>
-			                                            <option>5 Persons</option>
-			                                            <option>6+ Persons</option>
-		                                        	</select>
-		                                    	</div>
-		                                	</div>
-		                                	<div class="col-sm-5">
-		                                    	<div class="form-group">
-		                                        	<label>Rent price</label>
-		                                        	<div class="input-group">
-		                                            	<input type="text" class="form-control" placeholder="Rent price per day">
-		                                            	<span class="input-group-addon">$</span>
-		                                        	</div>
-		                                    	</div>
-		                                	</div>-->
 		                            	</div>
 		                            </div>
 		                            <div class="tab-pane" id="NameNType">
@@ -180,19 +132,19 @@
 		                            </div>
 		                            <div class="tab-pane" id="NumberToAdd">
 		                                <h5 class="info-text">Enter number of quantities you would like to add</h5>
-																		<p class="info-text">There are <b><label id="lblExistingQuantity"></label></b> entries present.</p>
+																		<p class="info-text"><b><label id="lblExistingQuantity"></label></b></p>
 		                                <input type="number" class="form-control" id="txtQuantityToAdd" placeholder="0" oninput="fillLastScreenValues()">
 		                            </div>
 		                            <div class="tab-pane" id="FinalScreen">
-		                                <p class="info-text">Click "Finish" to add <b><label id="lblTotalQuantity"></label></b> quantities of <b><label id="lblProductName">.</label></b> or click on "Previous" to make any changes.</p>
+		                                <p class="info-text"><label id="lblFinalMessage"></label></p>
 		                            </div>
 		                        </div>
 		                        <div class="wizard-footer">
 	                            	<div class="pull-right">
 	                                    <input type='button' class='btn btn-next btn-fill btn-success btn-wd' name='next' value='Next' />
+																			<input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='update' id="btnUpdate" value='Update' />
 	                                    <input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='finish' id="btnFinish" value='Finish' />
-									</div>
-
+																</div>
 	                                <div class="pull-left">
 	                                    <input type='button' class='btn btn-previous btn-default btn-wd' name='previous' value='Previous' />
 	                                </div>
@@ -207,7 +159,7 @@
 
 	    <div class="footer">
 	        <div class="container text-center">
-	             Made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>. Free download <a href="http://www.creative-tim.com/product/paper-bootstrap-wizard">here.</a>
+	             Currently in testing phase <i class="fa fa-heart heart"></i>
 	        </div>
 	    </div>
 	</div>
@@ -219,6 +171,7 @@
 	<script src="assets/js/adapter-latest.js" type="text/javascript"></script>
 	<script src="assets/js/quagga.js" type="text/javascript"></script>
 	<script src="assets/js/main.js" type="text/javascript"></script>
+	<script type = "text/javascript" src = "assets/js/validate.js"></script>
 
 	<!--   Core JS Files   -->
 	<script src="assets/js/jquery-2.2.4.min.js" type="text/javascript"></script>
