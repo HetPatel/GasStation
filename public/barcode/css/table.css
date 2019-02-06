@@ -1,0 +1,23 @@
+body {padding: 20px;}
+input {margin-bottom: 5px; padding: 2px 3px; width: 209px;}
+td {padding: 4px; border: 1px #CCC solid; width: 100px;}
+button {
+  border: 1px solid #0066cc;
+  background-color: #0099cc;
+  color: #ffffff;
+  padding: 5px 10px;
+}
+
+button:hover {
+  border: 1px solid #0099cc;
+  background-color: #00aacc;
+  color: #ffffff;
+  padding: 5px 10px;
+}
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}

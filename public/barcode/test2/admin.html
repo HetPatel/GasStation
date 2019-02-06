@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
+	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+	<title>PAGE TITLE</title>
+	<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-auth.js"></script>
+	<!-- <script src="assets/js/require.js" type="text/javascript"></script> -->
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+	<!-- CSS Files -->
+	<link href="assets/css/style.css" rel="stylesheet" />
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="assets/css/paper-bootstrap-wizard.css" rel="stylesheet" />
+
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+	<link href="assets/css/demo.css" rel="stylesheet" />
+
+	<!-- Fonts and Icons -->
+	<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+	<link href="assets/css/themify-icons.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="image-container set-full-height" style="background-image: url('assets/img/paper-2.jpeg')">
+	         <div class="logo-container">
+	            <div class="logo">
+	                <img src="assets/img/new_logo.png">
+	            </div>
+	            <div class="brand">
+	                <label id="lblUserName"> </label> <br/> <label style="color:lightgrey" id="lblSignOut" onclick="signOut()">Signout</label>
+	            </div>
+	        </div>
+
+	    <!--   Big container   -->
+	    <div class="container">
+	        <div class="row">
+		        <div class="col-sm-8 col-sm-offset-2">
+
+		            <!--      Wizard container        -->
+		            <div class="wizard-container">
+		                <div class="card wizard-card" data-color="green" id="wizard">
+		                <form action="" method="">
+		                <!--        You can switch " data-color="green" "  with one of the next bright colors: "blue", "azure", "orange", "red"       -->
+
+		                    	<div class="wizard-header">
+		                        	<h3 class="wizard-title">PRODUCT name</h3>
+		                        	<p class="category">Product Description</p>
+		                    	</div>
+								<div class="wizard-navigation">
+									<div class="progress-with-circle">
+									    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4" style="width: 15%;"></div>
+									</div>
+									<ul>
+			                            <li>
+											<a href="#Scanner" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-target"></i>
+												</div>
+												Barcode Scanner
+											</a>
+										</li>
+			                            <li>
+											<a href="#NameNType" data-toggle="tab" disabled="true">
+												<div class="icon-circle">
+													<i class="ti-smallcap"></i>
+												</div>
+												Product Name/Type
+											</a>
+										</li>
+			                            <li>
+											<a href="#NumberToAdd" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-plus"></i>
+												</div>
+												Add Quantities
+											</a>
+										</li>
+			                            <li>
+											<a href="#FinalScreen" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-rocket"></i>
+												</div>
+												Finish
+											</a>
+										</li>
+			                        </ul>
+								</div>
+		                        <div class="tab-content">
+		                            <div class="tab-pane" id="Scanner">
+		                            	<div class="row">
+		                                	<div class="col-sm-12">
+		                                    	<h5 class="info-text">Scan the product</h5>
+		                            		</div>
+		                                	<div class="col-sm-5 col-sm-offset-1">
+		                                    	<div class="form-group">
+		                                        	<!-- <label>City</label> -->
+																							<section id="container" class="container">
+																					      <div id="interactive" class="viewport"></div>
+																					    </section>
+		                                        	<input type="text" class="form-control" id="txtBarcode" placeholder="Product Barcode" disabled="true">
+		                                    	</div>
+		                                	</div>
+		                            	</div>
+		                            </div>
+		                            <div class="tab-pane" id="NameNType">
+		                                <h5 class="info-text">Enter/Confirm Product Name</h5>
+																		<input type="text" class="form-control" id="txtName" placeholder="Product Name">
+																		<div class="col-sm-5 col-sm-offset-1">
+																			<div class="form-group">
+																					<label>Choose a product type</label>
+																					<select id="productType" class="form-control">
+																							<option disabled="" selected="">- type -</option>
+								                              <option value="1">Pepsi</option>
+								                              <option value="2">Coca-Cola</option>
+								                              <option value="3">Nestle</option>
+								                              <option value="4">Cadbury</option>
+								                              <option value="5">Option 5</option>
+								                              <option value="6">Option 6</option>
+								                              <option value="7">Option 7</option>
+								                              <option value="8">Option 8</option>
+								                              <option value="9">Option 9</option>
+																					</select>
+																			</div>
+																		</div>
+		                            </div>
+		                            <div class="tab-pane" id="NumberToAdd">
+		                                <h5 class="info-text">Enter number of quantities you would like to add</h5>
+																		<p class="info-text"><b><label id="lblExistingQuantity"></label></b></p>
+		                                <input type="number" class="form-control" id="txtQuantityToAdd" placeholder="0" oninput="fillLastScreenValues()">
+		                            </div>
+		                            <div class="tab-pane" id="FinalScreen">
+		                                <p class="info-text"><label id="lblFinalMessage"></label></p>
+		                            </div>
+		                        </div>
+		                        <div class="wizard-footer">
+	                            	<div class="pull-right">
+	                                    <input type='button' class='btn btn-next btn-fill btn-success btn-wd' name='next' value='Next' />
+																			<input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='update' id="btnUpdate" value='Update' />
+	                                    <input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='finish' id="btnFinish" value='Finish' />
+																</div>
+	                                <div class="pull-left">
+	                                    <input type='button' class='btn btn-previous btn-default btn-wd' name='previous' value='Previous' />
+	                                </div>
+	                                <div class="clearfix"></div>
+		                        </div>
+		                    </form>
+		                </div>
+		            </div> <!-- wizard container -->
+		        </div>
+	        </div> <!-- row -->
+	    </div> <!--  big container -->
+
+	    <div class="footer">
+	        <div class="container text-center">
+	             Currently in testing phase <i class="fa fa-heart heart"></i>
+	        </div>
+	    </div>
+	</div>
+
+</body>
+
+	<!--	Scanner Files	 -->
+	<script src="assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+	<script src="assets/js/adapter-latest.js" type="text/javascript"></script>
+	<script src="assets/js/quagga.js" type="text/javascript"></script>
+	<script src="assets/js/main.js" type="text/javascript"></script>
+	<script type = "text/javascript" src = "assets/js/validate.js"></script>
+
+	<!--   Core JS Files   -->
+	<script src="assets/js/jquery-2.2.4.min.js" type="text/javascript"></script>
+	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="assets/js/jquery.bootstrap.wizard.js" type="text/javascript"></script>
+
+	<!--  Plugin for the Wizard -->
+	<script src="assets/js/paper-bootstrap-wizard.js" type="text/javascript"></script>
+
+	<!--  More information about jquery.validate here: http://jqueryvalidation.org/	 -->
+	<script src="assets/js/jquery.validate.min.js" type="text/javascript"></script>
+
+</html>
