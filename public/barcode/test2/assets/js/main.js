@@ -12,6 +12,8 @@ firebase.initializeApp(config);
 var productCode;
 var databaseRef = firebase.database().ref();
 var products = databaseRef.child("products/");
+var storageRef, blob2;
+// var storageRef = firebase.storage();
 var existingQuantity = 0;
 var totalQuantity, txtQuantityToAdd;
 var txtName, txtBarcode;
@@ -281,6 +283,33 @@ $(function() {
 
         if (App.lastResult !== code) {
             App.lastResult = code;
+            var $node = null, canvas = Quagga.canvas.dom.image;
+            // $("#result_strip ul.thumbnails").prepend($node);
+            // $node = $('<li><div class="thumbnail" style="width:300px; height:300px><div class="imgWrapper" ><img /></div><div class="caption"><h4 class="code"></h4></div></div></li>');
+            // $node.find("img").attr("src", canvas.toDataURL());
+            // $node.find("h4.code").html(code);
+            // $("#result_strip ul.thumbnails").prepend($node);
+            document.getElementById("imgScannedCode").src = canvas.toDataURL();
+            var imageSource = document.getElementById("imgScannedCode").src;
+
+            var ImageURL = imageSource;
+            // Split the base64 string in data and contentType
+            var block = ImageURL.split(";");
+            // Get the content type of the image
+            var contentType = block[0].split(":")[1];
+            // get the real base64 content of the file
+            var realData = block[1].split(",")[1];
+
+            // Convert it to a blob to upload
+            var blob = b64toBlob(realData, contentType);
+
+            // Create a root reference
+            storageRef = firebase.storage().ref('images/'+code);
+            blob2 = new Blob([blob, {type: "image/jpeg"}]);
+
+
+
+
 
             products.once("value", function(snapshot) {
               audio.play();
@@ -332,11 +361,16 @@ function add() {
         if (!snapshot.hasChild(txtBarcode)) {
           console.log("VALUE FOUND for " + txtBarcode);
           totalQuantity = Number(existingQuantity) + Number(txtQuantityToAdd);
+          var url = storageRef;
+          storageRef.put(blob2).then(function(snapshot) {
+            console.log('Uploaded a blob or file!');
+          });
             products.child(txtBarcode).set({
               "name": txtName,
               "productType": getSelectedValues(),
               "barCode": txtBarcode,
-              "quantity": totalQuantity
+              "quantity": totalQuantity,
+              "imgBarcodeURL": url
             });
         }
         else {
@@ -404,6 +438,30 @@ document.getElementById("btnFinish").onclick = add;
 document.getElementById("btnUpdate").onclick = update;
 
 function myFunction() {}
+
+function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+
+      var blob = new Blob(byteArrays, {type: contentType});
+      return blob;
+}
 
 function getCurrentDate(){
   var today = new Date();
