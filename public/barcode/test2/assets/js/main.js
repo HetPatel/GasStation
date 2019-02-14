@@ -306,7 +306,7 @@ $(function() {
             // Create a root reference
             storageRef = firebase.storage().ref('images/'+code);
             blob2 = new Blob([blob, {type: "image/jpeg"}]);
-
+            console.log(storageRef);
 
 
 
@@ -361,22 +361,34 @@ function add() {
         if (!snapshot.hasChild(txtBarcode)) {
           console.log("VALUE FOUND for " + txtBarcode);
           totalQuantity = Number(existingQuantity) + Number(txtQuantityToAdd);
-          var url = storageRef;
+          console.log(blob2);
+          console.log(storageRef);
           storageRef.put(blob2).then(function(snapshot) {
             console.log('Uploaded a blob or file!');
+            alert("Product added to database.");
+            // location.reload();
+            var startTime = new Date().getTime();
+            var interval = setInterval(function(){
+                if(new Date().getTime() - startTime > 10000){
+                    clearInterval(interval);
+                    return;
+                }
+                //do whatever here..
+                storageRef.getDownloadURL().then(function(downloadURL) {
+                  products.child(txtBarcode).set({
+                    "name": txtName,
+                    "productType": getSelectedValues(),
+                    "barCode": txtBarcode,
+                    "quantity": totalQuantity,
+                    "imgBarcodeURL": downloadURL
+                  });
+                });
+            }, 2000);
           });
-            products.child(txtBarcode).set({
-              "name": txtName,
-              "productType": getSelectedValues(),
-              "barCode": txtBarcode,
-              "quantity": totalQuantity,
-              "imgBarcodeURL": url
-            });
         }
         else {
         }
-  alert("Product added to database.");
-  location.reload();
+
   resetTotalQuantitiesToAdd();
   resetExistingQuantity();
   });

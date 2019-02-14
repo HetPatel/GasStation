@@ -1,0 +1,29 @@
+table{
+    border: 1px solid black;
+    table-layout: fixed;
+    /*width: 200px;*/
+}
+
+/*th, td {
+    border: 1px solid black;
+    width: 150px;
+}*/
+.data {
+  table-layout: fixed;
+  width: 100%;
+  white-space: nowrap;
+  text-align: center;
+}
+/* Column widths are based on these cells */
+.row-ID {
+  width: 10%;
+}
+.row-name {
+  width: 40%;
+}
+.row-job {
+  width: 30%;
+}
+.row-email {
+  width: 20%;
+}
