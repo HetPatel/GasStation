@@ -48,12 +48,15 @@ function showAllDetails1(){
 }
 
 function showAllDetails() {
+  if($('table').length){
+      document.getElementById("dataTable").innerHTML = "";
+    }
   // get the reference for the body
   var body = document.getElementsByTagName("body")[0];
-
   // creates a <table> element and a <tbody> element
   var tbl = document.createElement("table");
   tbl.setAttribute("class", "data");
+  tbl.setAttribute("id", "dataTable");
   var tblBody = document.createElement("tbody");
   var row0 = document.createElement("tr");
   var cell0 = document.createElement("td"); var cell1 = document.createElement("td"); var cell2 = document.createElement("td"); var cell3 = document.createElement("td"); var cell4 = document.createElement("td");
@@ -124,6 +127,7 @@ function showAllDetails() {
        });
     }
     });
+    document.getElementById("btnAllDetails").disabled = true;
 }
 
 function get_firebase_list(){
@@ -140,7 +144,25 @@ function get_firebase_list(){
   // });
   console.log("Selected Item: " + selectedItem);
 }
-// get_firebase_list();
+
+function resetData(){
+  var result = confirm("Want to Reset all product quantities to 0? \n Clicking Okay will NOT be able to Undo this action.");
+   if (result) {
+    products.once('value', function(snapshot){
+      if(snapshot.exists()){
+        var key = Object.keys(snapshot.val());
+        var counter = 0;
+        var length = key.length;
+         snapshot.forEach(function(data){
+           firebase.database().ref().child("products/" + key[counter] + "/quantity").set(0);
+           counter++;
+         });
+      }
+      document.getElementById("btnAllDetails").disabled = false;
+      });
+  }
+}
+
 function makeTable(container, data) {
 
     $.each(data, function(rowIndex, r) {
@@ -186,14 +208,3 @@ function getListFromRange(){
     }
 });
 }
-
-// var calendar_from = new SalsaCalendar({
-//   inputId: 'txtdateOfExpiry',
-//   lang: 'en',
-//   range: {
-//     min: 'today'
-//   },
-//   calendarPosition: 'right',
-//   fixed: false,
-//   connectCalendar: true
-// });
