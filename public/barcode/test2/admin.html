@@ -17,6 +17,7 @@
 
 	<!-- CSS Files -->
 	<link href="assets/css/style.css" rel="stylesheet" />
+	<link href="assets/css/spinner.css" rel="stylesheet" />
   <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="assets/css/paper-bootstrap-wizard.css" rel="stylesheet" />
 
@@ -29,6 +30,11 @@
 </head>
 
 <body>
+	<!-- <div id = "myDiv" style="display:none"> -->
+		<!-- <img id="mySpinner" class="center" src = "ajax-loader.gif" /> -->
+		<div id="mySpinner" class="loading">Loading&#8230;</div>
+	<!-- </div> -->
+	<!-- <div id="load"><div> -->
 	<div class="image-container set-full-height" style="background-image: url('assets/img/paper-2.jpeg')">
 	         <div class="logo-container">
 	            <div class="logo">
@@ -101,7 +107,7 @@
 		                            		</div>
 																		<div id="result_strip">
 															        <ul class="thumbnails"></ul>
-																			<img id="imgScannedCode"></img>
+																			<img id="imgScannedCode" style="width: 250px; height: 250px; margin-left:50px"></img>
 															        <ul class="collector"></ul>
 															      </div>
 		                                	<div class="col-sm-5 col-sm-offset-1">
@@ -127,11 +133,16 @@
 								                              <option value="2">Coca-Cola</option>
 								                              <option value="3">Nestle</option>
 								                              <option value="4">Cadbury</option>
-								                              <option value="5">Option 5</option>
-								                              <option value="6">Option 6</option>
-								                              <option value="7">Option 7</option>
-								                              <option value="8">Option 8</option>
-								                              <option value="9">Option 9</option>
+								                              <option value="5">Hershey</option>
+								                              <option value="6">Mars</option>
+								                              <option value="7">Wrigley</option>
+								                              <option value="8">Metro360</option>
+								                              <option value="9">CircleK</option>
+																							<option value="10">Milk</option>
+																							<option value="11">Bib 20</option>
+																							<option value="12">Bib 12</option>
+																							<option value="13">Bib 10</option>
+																							<option value="14">Freal</option>
 																					</select>
 																			</div>
 																		</div>
@@ -148,6 +159,7 @@
 		                        <div class="wizard-footer">
 	                            	<div class="pull-right">
 	                                    <input type='button' class='btn btn-next btn-fill btn-success btn-wd' name='next' value='Next' />
+																			<input type='button' class='btn btn-fill btn-success btn-wd' name='restart' id="btnRestart" value='Restart' onclick="refresh()"/>
 																			<input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='update' id="btnUpdate" value='Update' />
 	                                    <input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='finish' id="btnFinish" value='Finish' />
 																</div>

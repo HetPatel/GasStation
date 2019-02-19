@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/scandit-sdk"></script>
+	<script src="https://cdn.jsdelivr.net/npm/scandit-sdk@4.1.1"></script>
+	<script src="index.min.js"></script>
+	<script src="index.js"></script>
+	<script type="text/javascript">
+		ScanditSDK.configure("ARBs2RozB8M7HWv5Wj/nPoFEoQ9BH5EHP3TqMEdEwf1TMm/lrgy4giVG1JpGT9wV7R/LczEoh2egT/AJxiGQu5gikqFBGTObW0osSMpUXjlkccENODrXruheo4tBUKGRO1tZvVAejtAyVXQaVjFm3D0HHcuIN+1SqlCZ0AWFkOBptLJLcpZ0IWV5lBFUZ9VLCdv9ssLtatUUzszs4hHchIa+zApiaOxVUHFFPSS0OHOK2ikFPJQAqVw12iq3TrOnD+dFtGsO/CjBF5vFDBhrqrAp7YJr1WgkuIiFEAFgPwN+DC/2POFWeMWKtpXGsAjv6MPdh6LSGJirV/x5u0eeJB6/e6xsQC4pWdRMglhOTGAKkLmCz4XtftJFzGvoLMEfO4IiPgusu8eKs9jevU+qZGuAzerjqr1uV7GK3cwhf9UaMxqToO/Cdj4xvHyG4c+aR69PO3GVeXgNUTtzqqqeVlwBmkiEB4rfkucT/9S2Ui4/gEDs8EWkSGw6xDo9ZMbPGG/bPr410cWfY/4Of8f5gghTqEqiLcpfgzRklV7JYFp/1XEOB2B95+YjICPNj6DyfJJ9dK/OVVniYtd2CrtbeAbY30UKDSGsh0QJRKKGhpHHe7ym9TjiQs9a7y8eeuZeGTQIrBG9SWWQu2fsHfWu2/EgAeDv8FfTEzDdXQEiyBopBdsyqcuyRbRORNyILWgrm+Z2tzUpsOYmW68p8GYkZneRCQL80VGQp3nR0JMbhOKNHXNb95vYGs8OKThNRZkXQqOtyY5Hmt/p1lDMQiatdJoYgE19gzSeVR0VvoDs2cetumhptpjAwh0yYvacJytD4BLpxWY=", {
+		  engineLocation: "build/"
+		});
+	</script>
+</head>
+<body>
+	<div id="scandit-barcode-picker" style="max-width: 1280px; max-height: 50%;"></div>
+	<script type="text/javascript">
+		ScanditSDK.BarcodePicker.create(document.getElementById("scandit-barcode-picker"), {
+		  playSoundOnScan: true,
+		  vibrateOnScan: true
+		}).then(function(barcodePicker) {
+		  // barcodePicker is ready here to be used (rest of the tutorial code should go here)
+			  var scanSettings = new ScanditSDK.ScanSettings({
+			  enabledSymbologies: ["ean8", "ean13", "upca", "upce", "code128", "code39", "code93", "itf"],
+			  codeDuplicateFilter: 1000
+			});
+			barcodePicker.applyScanSettings(scanSettings);
+
+			barcodePicker.onScan(function(scanResult) {
+			  alert(scanResult.barcodes.reduce(function(string, barcode) {
+			    return string + ScanditSDK.Barcode.Symbology.toHumanizedName(barcode.symbology) + ": " + barcode.data + "\n";
+			  }, ""));
+			});
+		});
+	</script>
+</body>
+</html>

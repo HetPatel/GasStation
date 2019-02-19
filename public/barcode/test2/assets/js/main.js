@@ -355,25 +355,12 @@ function add() {
   txtName = getProductName();
   txtBarcode = document.getElementById('txtBarcode').value;
   txtQuantityToAdd = getQuantityToAdd();
-  console.log("Selected Product Type: " + getSelectedValues());
+  document.getElementById("btnFinish").disabled = true;
   products.once('value', function(snapshot) {
-      console.log("Snapshot: " + snapshot);
         if (!snapshot.hasChild(txtBarcode)) {
-          console.log("VALUE FOUND for " + txtBarcode);
           totalQuantity = Number(existingQuantity) + Number(txtQuantityToAdd);
-          console.log(blob2);
-          console.log(storageRef);
           storageRef.put(blob2).then(function(snapshot) {
             console.log('Uploaded a blob or file!');
-            alert("Product added to database.");
-            // location.reload();
-            var startTime = new Date().getTime();
-            var interval = setInterval(function(){
-                if(new Date().getTime() - startTime > 10000){
-                    clearInterval(interval);
-                    return;
-                }
-                //do whatever here..
                 storageRef.getDownloadURL().then(function(downloadURL) {
                   products.child(txtBarcode).set({
                     "name": txtName,
@@ -383,12 +370,14 @@ function add() {
                     "imgBarcodeURL": downloadURL
                   });
                 });
-            }, 2000);
           });
         }
         else {
+          $("#mySpinner").show().delay(7000).fadeOut();
+          setTimeout(function () { alert("Could not be added to database. \n Please contact your administrator."); }, 7000);
         }
-
+        $("#mySpinner").show().delay(7000).fadeOut();
+        setTimeout(function () { alert("Product added to database."); }, 7000);
   resetTotalQuantitiesToAdd();
   resetExistingQuantity();
   });
@@ -403,7 +392,7 @@ function update() {
     "quantity": totalQuantity
   }).then(function(){
     alert("Data updated successfully.");
-    location.reload();
+    document.getElementById("btnUpdate").disabled = true;
     resetTotalQuantitiesToAdd();
     resetExistingQuantity();
   }).catch(function(error) {
@@ -412,10 +401,10 @@ function update() {
 }
 
 function getSelectedValues(){
-            var dropDown = document.getElementById('productType'), productTypes = [], i;
+            var dropDown = document.getElementById('productType'), productTypes, i;
             for (i = 0; i < dropDown.options.length ; i ++) {
                 if (dropDown.options[i].selected) {
-                    productTypes.push( dropDown.options[i].text);
+                    productTypes = dropDown.options[i].text;
                 }
             }
             return productTypes;
@@ -431,16 +420,26 @@ function assignProductsTypes(productType){
     productTypeValue = 3;
   }else if(productType == "Cadbury"){
     productTypeValue = 4;
-  }else if(productType == "Option 5"){
+  }else if(productType == "Hershey"){
     productTypeValue = 5;
-  }else if(productType == "Option 6"){
+  }else if(productType == "Mars"){
     productTypeValue = 6;
-  }else if(productType == "Option 7"){
+  }else if(productType == "Wrigley"){
     productTypeValue = 7;
-  }else if(productType == "Option 8"){
+  }else if(productType == "Metro360"){
     productTypeValue = 8;
-  }else if(productType == "Option 9"){
+  }else if(productType == "CircleK"){
     productTypeValue = 9;
+  }else if(productType == "Milk"){
+    productTypeValue = 10;
+  }else if(productType == "Bib 20"){
+    productTypeValue = 11;
+  }else if(productType == "Bib 12"){
+    productTypeValue = 12;
+  }else if(productType == "Bib 10"){
+    productTypeValue = 13;
+  }else if(productType == "Freal"){
+    productTypeValue = 14;
   }
     console.log("Value: "+productTypeValue);
   return productTypeValue;
@@ -535,11 +534,13 @@ function resetExistingQuantity(){
 function setUpdateScreen(){
   document.getElementById("btnUpdate").disabled = false;
   document.getElementById("btnFinish").disabled = true;
+  document.getElementById("btnRestart").disabled = false;
 }
 
 function setAddScreen(){
   document.getElementById("btnUpdate").disabled = true;
   document.getElementById("btnFinish").disabled = false;
+  document.getElementById("btnRestart").disabled = false;
 }
 
 function getProductName(){
@@ -547,6 +548,7 @@ function getProductName(){
 }
 
 function setWelcomeScreen(){
+  $("#mySpinner").hide();
   // document.getElementById("lblUserName").innerHTML = window.firebase.auth().currentUser.displayName;
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -567,6 +569,10 @@ function signOut(){
   }, function(error) {
      console.log('Signout Failed')
   });
+}
+
+function refresh(){
+  location.reload();
 }
 
 resetLastScreenValues();

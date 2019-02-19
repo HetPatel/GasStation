@@ -3,3 +3,50 @@ img {
   height: 150px;
   display: block;
 }
+
+.btnSet {
+	width:33%;
+	color: #20bf6b !important;
+	text-transform: uppercase;
+	background: #ffffff;
+	padding: 20px;
+	border: 4px solid #20bf6b !important;
+	border-radius: 6px;
+	display: inline-block;
+}
+
+.btnSet:hover {
+color: #494949 !important;
+border-radius: 50px;
+border-color: #494949 !important;
+transition: all 0.3s ease 0s;
+}
+
+.selectProduct {
+  margin: 50px;
+  width: 150px;
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(../img/product_type.png) 96% / 15% no-repeat #eee;
+}
+
+
+/* CAUTION: IE hackery ahead */
+
+
+select::-ms-expand { 
+    display: none; /* remove default arrow in IE 10 and 11 */
+}
+
+/* target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width:0\0) {
+    select {
+        background:none\9;
+        padding: 5px\9;
+    }
+}
