@@ -22,7 +22,6 @@
 #interactive.viewport canvas.drawingBuffer, video.drawingBuffer {
   margin-left: -640px;
 }
-
 .scanner-overlay {
   display: none;
   width: 640px;
