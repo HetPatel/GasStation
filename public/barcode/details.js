@@ -18,7 +18,9 @@ var storageRef;
 
 function showAllDetails() {
   if($('table').length){
-      document.getElementById("dataTable").innerHTML = "";
+    var removeTab = document.getElementById('dataTable');
+    var parentEl = removeTab.parentElement;
+    parentEl.removeChild(removeTab);
     }
   // get the reference for the body
   var body = document.getElementsByTagName("body")[0];
@@ -101,7 +103,9 @@ function showAllDetails() {
 
 function get_firebase_list(){
   if($('table').length){
-      document.getElementById("dataTable").innerHTML = "";
+      var removeTab = document.getElementById('dataTable');
+      var parentEl = removeTab.parentElement;
+      parentEl.removeChild(removeTab);
     }
     // get the reference for the body
     var body = document.getElementsByTagName("body")[0];
