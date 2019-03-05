@@ -1,0 +1,7 @@
+{
+  "name": "TrackIt",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

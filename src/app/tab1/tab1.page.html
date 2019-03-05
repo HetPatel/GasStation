@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Scan
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    It's time to start scanning!! No expired items left behind.
+  <p>
+    Get started by clicking on the button below.
+  </p>
+  <ion-input type="text" [(ngModel)]="encodeData"></ion-input>
+  <ion-button color="dark" expand="block" (click)="scanCode()">Start Scan</ion-button>
+</ion-content>
