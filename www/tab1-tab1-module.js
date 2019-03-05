@@ -116,7 +116,7 @@ var Tab1PageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Scan\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n    It's time to start scanning!! No expired items left behind.\n  <p>\n    Get started by clicking on the button below.\n  </p>\n  <ion-input type=\"text\" [(ngModel)]=\"encodeData\"></ion-input>\n  <ion-button color=\"dark\" expand=\"block\" (click)=\"scanCode()\">Start Scan</ion-button>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Scan\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n    It's time to start scanning!! No expired items left behind.\n  <p>\n    Get started by clicking on the button below.\n  </p>\n  <ion-input type=\"text\" [(ngModel)]=\"encodeData\"></ion-input>\n  <ion-label *ngIf=\"barcode\">{{barcode.text}}</ion-label>\n  <ion-button color=\"dark\" expand=\"block\" (click)=\"scanCode()\">Start Scan</ion-button>\n</ion-content>\n"
 
 /***/ }),
 
@@ -162,9 +162,9 @@ var ScanPage = /** @class */ (function () {
     };
     ScanPage.prototype.encodeText = function (data) {
         var _this = this;
-        this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, data.text).then(function (encodedData) {
-            console.log(encodedData);
-            _this.encodeData = encodedData;
+        this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, data.text).then(function (result) {
+            console.log(result);
+            _this.encodeData = result;
         }, function (err) {
             console.log('Error', err);
         });

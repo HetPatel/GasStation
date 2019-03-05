@@ -22,9 +22,9 @@ export class ScanPage {
   }
 
   encodeText(data) {
-    this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, data.text).then((encodedData) => {
-      console.log(encodedData);
-      this.encodeData = encodedData;
+    this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, data.text).then((result) => {
+      console.log(result);
+      this.encodeData = result;
     }, (err) => {
       console.log('Error', err);
     });

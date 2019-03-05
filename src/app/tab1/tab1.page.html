@@ -12,5 +12,6 @@
     Get started by clicking on the button below.
   </p>
   <ion-input type="text" [(ngModel)]="encodeData"></ion-input>
+  <ion-label *ngIf="barcode">{{barcode.text}}</ion-label>
   <ion-button color="dark" expand="block" (click)="scanCode()">Start Scan</ion-button>
 </ion-content>
