@@ -14,19 +14,9 @@ export class ScanPage {
   scanCode() {
     const self = this;
     self.barcodeScanner.scan().then(barcodeData => {
-      self.barcode = barcodeData.text;
-      self.encodeData(barcodeData);
+      self.barcode = barcodeData;
      }).catch(err => {
          console.log('Error', err);
      });
-  }
-
-  encodeText(data) {
-    this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, data.text).then((result) => {
-      console.log(result);
-      this.encodeData = result;
-    }, (err) => {
-      console.log('Error', err);
-    });
   }
 }

@@ -154,8 +154,8 @@ var ScanPage = /** @class */ (function () {
     ScanPage.prototype.scanCode = function () {
         var self = this;
         self.barcodeScanner.scan().then(function (barcodeData) {
-            self.barcode = barcodeData.text;
-            self.encodeData(barcodeData);
+            self.barcode = barcodeData;
+            self.encodeText(barcodeData);
         }).catch(function (err) {
             console.log('Error', err);
         });
