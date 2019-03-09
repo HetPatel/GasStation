@@ -11,6 +11,7 @@ export class ScanPage {
   encodeData: any;
   constructor(private barcodeScanner: BarcodeScanner) { }
 
+
   scanCode() {
     const self = this;
     self.barcodeScanner.scan().then(barcodeData => {

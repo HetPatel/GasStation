@@ -116,7 +116,7 @@ var Tab1PageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Scan\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n    It's time to start scanning!! No expired items left behind.\n  <p>\n    Get started by clicking on the button below.\n  </p>\n  <ion-input type=\"text\" [(ngModel)]=\"encodeData\"></ion-input>\n  <ion-label *ngIf=\"barcode\">{{barcode.text}}</ion-label>\n  <ion-button color=\"dark\" expand=\"block\" (click)=\"scanCode()\">Start Scan</ion-button>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Scan\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n    It's time to start scanning!! No expired items left behind.\n  <p>\n    Get started by clicking on the button below.\n  </p>\n  <h2 style=\"text-align:center\" *ngIf=\"barcode\">{{barcode.text}}</h2>\n  <ion-button color=\"dark\" expand=\"block\" (click)=\"scanCode()\">Start Scan</ion-button>\n</ion-content>\n"
 
 /***/ }),
 
@@ -127,7 +127,7 @@ module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Scan\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".welcome-card ion-img {\n  max-height: 35vh;\n  overflow: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9yYW5hYy9Eb2N1bWVudHMvR2l0SHViL0dhc1N0YXRpb24vc3JjL2FwcC90YWIxL3RhYjEucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQWdCO0VBQ2hCLGdCQUFnQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvdGFiMS90YWIxLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi53ZWxjb21lLWNhcmQgaW9uLWltZyB7XG4gIG1heC1oZWlnaHQ6IDM1dmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59XG4iXX0= */"
+module.exports = ".welcome-card ion-img {\n  max-height: 35vh;\n  overflow: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9oZXRwYXRlbC9IZXQvZ2l0L0dhc1N0YXRpb24vc3JjL2FwcC90YWIxL3RhYjEucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQWdCO0VBQ2hCLGdCQUFnQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvdGFiMS90YWIxLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi53ZWxjb21lLWNhcmQgaW9uLWltZyB7XG4gIG1heC1oZWlnaHQ6IDM1dmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59Il19 */"
 
 /***/ }),
 
@@ -155,17 +155,7 @@ var ScanPage = /** @class */ (function () {
         var self = this;
         self.barcodeScanner.scan().then(function (barcodeData) {
             self.barcode = barcodeData;
-            self.encodeText(barcodeData);
         }).catch(function (err) {
-            console.log('Error', err);
-        });
-    };
-    ScanPage.prototype.encodeText = function (data) {
-        var _this = this;
-        this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, data.text).then(function (result) {
-            console.log(result);
-            _this.encodeData = result;
-        }, function (err) {
             console.log('Error', err);
         });
     };

@@ -36,6 +36,7 @@
     "ngx-barcode": "^0.2.4",
     "phonegap-plugin-barcodescanner": "8.0.1",
     "rxjs": "~6.3.3",
+    "rxjs-compat": "^6.4.0",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
