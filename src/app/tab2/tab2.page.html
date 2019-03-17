@@ -1,9 +1,23 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Product List
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+    <ion-searchbar [(ngModel)]="search" placeholder="Filter Products"></ion-searchbar>
+	<ion-list lines="full">
+	  <ion-item *ngFor="let item of products | async | filter:search">
+	    <ion-avatar slot="start">
+	      <img [src]="item.imgBarcodeURL">
+	    </ion-avatar>
+	    <ion-label>
+	    	<h3>{{item.name}}</h3>
+	    	<p>{{item.productType}}</p>
+	    </ion-label>
+	    <ion-note slot="end">{{item.quantity}}</ion-note>
+	  </ion-item>
+	</ion-list>
+</ion-content>

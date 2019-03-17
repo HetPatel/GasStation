@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+    	Edit Product
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+	  <ion-card>
+
+    <img [src]="scannedItem.imgBarcodeURL"/>
+
+    <ion-card-content>
+      <ion-label color="dark">
+      	<h2>{{scannedItem.name}}</h2>
+      </ion-label>
+      <p>
+        {{scannedItem.productType}}
+      </p>
+    </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col>
+      	 <ion-item>
+      	 	<ion-label>Quantity</ion-label>
+      	 	<ion-input type="number" [(value)]="scannedItem.quantity"></ion-input>
+      	 </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-button expand="block" (click)="save()">
+        Save
+      </ion-button>
+</ion-content>
