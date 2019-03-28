@@ -37,6 +37,11 @@ const routes: Routes = [
     redirectTo: '/tabs/tab1',
     pathMatch: 'full'
   }
+      // {
+      //   path: 'login',
+      //   redirectTo: '../login',
+      //   loadChildren: '../login/login.module#LoginPageModule'
+      // }
 ];
 
 @NgModule({

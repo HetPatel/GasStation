@@ -1,3 +1,9 @@
+<div *ngIf="user.uid">
+    You're already logged in, Welcome {{ user.displayName }}
+    <ion-button color="dark" expand="block" (click)="signOut()">Signout</ion-button>
+    <!-- <button ion-button (tap)="signOut()">
+      Signout
+    </button> -->
 <ion-header>
   <ion-toolbar>
     <ion-title>
@@ -14,3 +20,4 @@
   <h2 style="text-align:center" *ngIf="barcode">{{barcode.text}}</h2>
   <ion-button color="dark" expand="block" (click)="scanCode()">Start Scan</ion-button>
 </ion-content>
+</div>
