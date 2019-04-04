@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { Platform, NavController } from '@ionic/angular';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { TabsPage } from '../tabs/tabs.page';
+import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +19,11 @@ export class LoginPage implements OnInit {
   user: Observable<firebase.User>;
 
   constructor(public navCtrl: NavController,
-  			  private afAuth: AngularFireAuth, 
+  			      private afAuth: AngularFireAuth, 
               private gplus: GooglePlus,
-              private platform: Platform) { 
+              private platform: Platform,
+              public modalController: ModalController,
+              private router: Router) { 
     this.user = this.afAuth.authState;
   }
 
@@ -44,7 +48,7 @@ export class LoginPage implements OnInit {
     return await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken)
       )
-
+    this.router.navigateByUrl('/tabshome');
   } catch(err) {
     console.log(err)
   }
@@ -57,7 +61,9 @@ async webGoogleLogin(): Promise<void> {
     console.log("Credential Value1: " + JSON.stringify(credential.user.uid));
     if(credential.user.uid){
     	console.log("Atleast I am IN");
-      this.navCtrl.navigateRoot(TabsPage);
+      this.router.navigateByUrl('/tabshome');
+      // this.modalController.dismiss();
+      // this.navCtrl.navigateRoot(TabsPage);
     }
 
   } catch(err) {
