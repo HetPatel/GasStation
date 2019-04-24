@@ -21,7 +21,7 @@ export class ScanPage {
     self.barcode.text = '0058496442644';
 
     self.presentModal();
-    
+
     return
     self.barcodeScanner.scan().then(barcodeData => {
       self.barcode = barcodeData;

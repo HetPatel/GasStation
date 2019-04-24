@@ -14,12 +14,13 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 import { PipesModule } from './../pipes.module';
 import { ProductComponent } from './product/product.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [AppComponent, ProductComponent],
   entryComponents: [ProductComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule,
   	AngularFireModule.initializeApp(environment.firebase, 'track-it'),
   	AngularFireDatabaseModule, PipesModule
   ],
