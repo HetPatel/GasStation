@@ -18,7 +18,7 @@ export class ScanPage {
   scanCode() {
     const self = this;
     self.barcode = {};
-    self.barcode.text = '0058496442644';
+    self.barcode.text = '0058496442643';
 
     self.presentModal();
 

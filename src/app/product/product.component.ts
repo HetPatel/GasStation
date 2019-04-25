@@ -11,6 +11,7 @@ export class ProductComponent implements OnInit {
   @Input()
   barcode: any;
   scannedItem: any = {};
+  newProduct = false;
 
   constructor(private db: AngularFireDatabase, public modalController: ModalController) { }
 
@@ -18,8 +19,11 @@ export class ProductComponent implements OnInit {
     const self = this;
     const product = self.db.list('/products', ref => ref.orderByChild('barCode').equalTo(self.barcode.text));
     product.valueChanges().subscribe(res => {
-      if (res) {
+      if (res && res[0]) {
         self.scannedItem = res[0];
+      } else {
+        self.newProduct = true;
+        self.scannedItem.barCode = self.barcode.text;
       }
     });
   }
@@ -31,10 +35,17 @@ export class ProductComponent implements OnInit {
   save() {
     const self = this;
     console.log(self.scannedItem.quantity);
-    const product = self.db.object('/products/' + self.scannedItem.barCode);
+    if (self.newProduct) {
+      const products = self.db.list('/products');
+      products.push(self.scannedItem).then( res => {
+        self.modalController.dismiss();
+      });
+    } else {
+      const product = self.db.object('/products/' + self.scannedItem.barCode);
     product.set(self.scannedItem).then(res => {
       console.log(res);
         self.modalController.dismiss();
     });
+  }
   }
 }
